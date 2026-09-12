@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة التحكم | الأمير للمالتي ميديا</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <strong>لوحة تحكم الأمير</strong>
+  <button class="btn btn-outline btn-sm" id="sidebarToggle">☰ القائمة</button>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">لوحة تحكم الأمير<small>AL AMEER MULTIMEDIA</small></div>
+    <a class="side-link active" data-section="overview" href="#overview">نظرة عامة</a>
+    <a class="side-link" data-section="services" href="#services">الخدمات</a>
+    <a class="side-link" data-section="portfolio" href="#portfolio">معرض الأعمال</a>
+    <a class="side-link" data-section="orders" href="#orders">الطلبات</a>
+    <a class="side-link" data-section="messages" href="#messages">الرسائل</a>
+    <a class="side-link" data-section="settings" href="#settings">إعدادات الموقع</a>
+    <a class="side-link" href="/" target="_blank">↩ عرض الموقع</a>
+    <button class="btn btn-outline logout" id="logoutBtn">تسجيل الخروج</button>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h2 id="sectionTitle">نظرة عامة</h2>
+      <span id="userBadge" style="color:var(--ink-muted); font-size:0.85rem;"></span>
+    </div>
+
+    <section id="sec-overview" class="section-panel">
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="panel">
+        <div class="panel-head"><h3>أحدث الطلبات</h3></div>
+        <div class="table-scroll"><table id="recentOrdersTable"><thead><tr><th>العميل</th><th>الخدمة</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="sec-services" class="section-panel" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h3>إدارة الخدمات</h3><button class="btn btn-primary btn-sm" id="addServiceBtn">+ إضافة خدمة</button></div>
+        <div class="table-scroll"><table id="servicesTable"><thead><tr><th></th><th>الاسم</th><th>المجموعة</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="sec-portfolio" class="section-panel" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h3>إدارة معرض الأعمال</h3><button class="btn btn-primary btn-sm" id="addPortfolioBtn">+ إضافة مشروع</button></div>
+        <div class="table-scroll"><table id="portfolioTable"><thead><tr><th></th><th>العنوان</th><th>التصنيف</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="sec-orders" class="section-panel" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h3>طلبات العملاء</h3></div>
+        <div class="table-scroll"><table id="ordersTable"><thead><tr><th>العميل</th><th>الهاتف</th><th>الخدمة</th><th>الميزانية</th><th>مرفق</th><th>التاريخ</th><th>الحالة</th><th></th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="sec-messages" class="section-panel" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h3>رسائل التواصل</h3></div>
+        <div class="table-scroll"><table id="messagesTable"><thead><tr><th>الاسم</th><th>البريد/الهاتف</th><th>الرسالة</th><th>التاريخ</th><th></th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="sec-settings" class="section-panel" style="display:none;">
+      <div class="panel">
+        <div class="panel-head"><h3>إعدادات الموقع</h3></div>
+        <form id="settingsForm" class="form-grid-2"></form>
+        <button class="btn btn-primary" id="saveSettingsBtn" style="margin-top:18px;">حفظ الإعدادات</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/admin/admin.js"></script>
+</body>
+</html>

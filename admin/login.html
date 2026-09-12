@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تسجيل دخول الإدارة | الأمير للمالتي ميديا</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="login-shell">
+    <div class="login-card">
+      <h1>لوحة تحكم الأمير</h1>
+      <p class="sub">تسجيل دخول المدير</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">البريد الإلكتروني</label>
+          <input id="email" name="email" type="email" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="password">كلمة المرور</label>
+          <input id="password" name="password" type="password" required autocomplete="current-password">
+        </div>
+        <div class="error-text" id="loginError"></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;">تسجيل الدخول</button>
+      </form>
+      <p class="hint">هذه اللوحة مخصصة لمالك ومدير الموقع فقط.</p>
+    </div>
+  </div>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('loginError');
+  err.textContent = '';
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      window.location.href = '/admin/dashboard.html';
+    } else {
+      err.textContent = data.error || 'فشل تسجيل الدخول';
+      btn.disabled = false;
+    }
+  } catch {
+    err.textContent = 'تعذر الاتصال بالخادم';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
