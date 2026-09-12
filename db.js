@@ -7,9 +7,9 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, 'data', 'ameer.db');
+const DB_PATH = path.join(__dirname, 'data', 'ameer.d');
 const isNew = !fs.existsSync(DB_PATH);
-
+fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 const db = new DatabaseSync(DB_PATH);
 db.exec('PRAGMA journal_mode = WAL;');
 db.exec('PRAGMA foreign_keys = ON;');
