@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SECRET_PATH = path.join(__dirname, 'data', '.session-secret');
+    fs.mkdirSync(path.dirname(SECRET_PATH), { recursive: true });
 let SECRET;
 if (fs.existsSync(SECRET_PATH)) {
   SECRET = fs.readFileSync(SECRET_PATH, 'utf8').trim();
