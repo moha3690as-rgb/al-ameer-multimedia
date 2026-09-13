@@ -7,9 +7,10 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, 'data', 'ameer.d');
-const isNew = !fs.existsSync(DB_PATH);
+const DB_PATH = path.join(__dirname, 'data', 'ameer.db');
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+const isNew = !fs.existsSync(DB_PATH);
+
 const db = new DatabaseSync(DB_PATH);
 db.exec('PRAGMA journal_mode = WAL;');
 db.exec('PRAGMA foreign_keys = ON;');
@@ -36,7 +37,7 @@ CREATE TABLE IF NOT EXISTS services (
   description TEXT,
   icon TEXT DEFAULT 'sparkles',
   image TEXT,
-  group_name TEXT NOT NULL, -- e.g. التصميم الجرافيكي / المونتاج / ...
+  group_name TEXT NOT NULL,
   sort_order INTEGER NOT NULL DEFAULT 0,
   visible INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -47,7 +48,7 @@ CREATE TABLE IF NOT EXISTS portfolio (
   title TEXT NOT NULL,
   description TEXT,
   category_slug TEXT NOT NULL DEFAULT 'design',
-  media_type TEXT NOT NULL DEFAULT 'image', -- image | video
+  media_type TEXT NOT NULL DEFAULT 'image',
   media_url TEXT,
   sort_order INTEGER NOT NULL DEFAULT 0,
   visible INTEGER NOT NULL DEFAULT 1,
@@ -64,7 +65,7 @@ CREATE TABLE IF NOT EXISTS orders (
   budget TEXT,
   needed_date TEXT,
   attachment_url TEXT,
-  status TEXT NOT NULL DEFAULT 'جديد', -- جديد | قيد المراجعة | قيد التنفيذ | مكتمل | ملغي
+  status TEXT NOT NULL DEFAULT 'جديد',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -92,7 +93,6 @@ function setDefaultSetting(key, value) {
   }
 }
 
-// ---- Seed default settings (editable later from the dashboard) ----
 setDefaultSetting('company_name_ar', 'شركة الأمير للمالتي ميديا');
 setDefaultSetting('company_name_en', 'AL AMEER MULTIMEDIA');
 setDefaultSetting('tagline', 'نصنع الفكرة... ونحوّلها إلى تجربة بصرية');
@@ -108,7 +108,6 @@ setDefaultSetting('primary_color', '#C9A461');
 setDefaultSetting('logo_url', '/uploads/logo-placeholder.svg');
 setDefaultSetting('hero_image', '');
 
-// ---- Seed categories ----
 const categories = [
   ['الكل', 'all'],
   ['تصميم', 'design'],
@@ -123,7 +122,6 @@ for (const [name_ar, slug] of categories) {
   if (!row) db.prepare('INSERT INTO categories (name_ar, slug) VALUES (?, ?)').run(name_ar, slug);
 }
 
-// ---- Seed services (only on first run) ----
 if (isNew) {
   const serviceRows = [
     ['تصاميم إعلانية وبوسترات', 'هويات بصرية، شعارات، منشورات سوشيال ميديا وتصاميم مناسبات باحتراف.', 'palette', 'التصميم الجرافيكي', 1],
@@ -152,7 +150,6 @@ if (isNew) {
   for (const p of portfolioRows) insertPortfolio.run(...p);
 }
 
-// ---- Seed first Super Admin account if no users exist ----
 function ensureDefaultAdmin() {
   const row = db.prepare('SELECT id FROM users LIMIT 1').get();
   if (row) return null;
